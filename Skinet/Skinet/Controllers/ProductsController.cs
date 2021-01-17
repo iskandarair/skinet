@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Infrastrcuture.Data;
+using Core.Interfaces;
+using Infrastructure.Data;
 
 namespace Skinet.Controllers
 {
@@ -12,23 +14,39 @@ namespace Skinet.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly StoreContext _context;
-        public ProductsController(StoreContext context)
+        private readonly IProductRepository _repo;
+        public ProductsController(IProductRepository repo)
         {
-            _context = context;
+            _repo = repo;
         } 
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            var result = await _context.Products.ToListAsync();
+            var result = await _repo.GetProductsAsync();
             return Ok(result);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var result = await _context.Products.FindAsync(id);
+            //test
+            var result = await _repo.GetProductByIdAsync(id);
             return result;
         }
+
+        [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+        {
+            var result = await _repo.GetProductTypesAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductBrands()
+        {
+            var result = await _repo.GetProductBrandsAsync();
+            return Ok(result);
+        }
+
     }
 }
