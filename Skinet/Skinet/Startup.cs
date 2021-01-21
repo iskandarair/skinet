@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Skinet.Helpers;
+using AutoMapper;
 
 namespace Skinet
 {
@@ -22,6 +24,8 @@ namespace Skinet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             services.AddDbContext<StoreContext>(x =>
                 x.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
@@ -36,6 +40,7 @@ namespace Skinet
             }
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseStaticFiles();
             app.UseAuthorization();
 
             app.UseEndpoints(x =>
