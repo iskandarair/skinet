@@ -11,6 +11,8 @@ using Core.Specifications;
 using Skinet.Dtos;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Skinet.Errors;
 
 namespace Skinet.Controllers
 {
@@ -53,12 +55,18 @@ namespace Skinet.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             //test
             //var result = await _productRepo.GetByIdAsync(id);
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var result = await _productRepo.GetEntityWithSpec(spec);
+            if(result == null)
+            {
+                return NotFound(new ApiResponse(404));
+            }
 
             return _mapper.Map<Product, ProductToReturnDto>(result);
         }
