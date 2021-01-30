@@ -35,6 +35,14 @@ namespace Skinet
 
             services.AddApplicationServices();
 
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
+
             services.AddSwaggerDocumentation();
 
         }
@@ -43,22 +51,18 @@ namespace Skinet
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             app.UseMiddleware<ExceptionMiddleware>();
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
+           
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthorization();
             app.UseSwaggerDocumentation();
+            app.UseCors("CorsPolicy");
             app.UseEndpoints(x =>
             {
                 x.MapControllers();
             });
-            //app.UseHttpsRedirection();
-            //app.UseMvc();
         }
     }
 }

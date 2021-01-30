@@ -28,8 +28,8 @@ namespace Skinet.Extensions
                     var errors = actionContext.ModelState
                     .Where(e => e.Value.Errors.Count > 0)
                     .SelectMany(x => x.Value.Errors)
-                    .Select(x => x.ErrorMessage);
-
+                    .Select(x => x.ErrorMessage).ToArray();
+                    
                     var errorResponse = new ApiValidationErrorResponse
                     {
                         Errors = errors
