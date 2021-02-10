@@ -1,13 +1,13 @@
 <div class="">
     <div class="card h-100 shadow-sm">
         <img src="{{product.pictureUrl}}" alt="{{product.name}}" class="img-fluid bg-info" />
-        <a href="#">
+        <a routerLink="/shop/{{product.id}}">
             <h6 class="text-uppercase">{{product.name}}</h6>
         </a>
         <span class="mb-2">{{product.price | currency}}</span>
         <div class="btn-group mt-auto">
             <button class="btn btn-outline-secondary">Add to Card</button>
-            <button class="btn btn-outline-secondary">View</button>
+            <button routerLink="/shop/{{product.id}}" class="btn btn-outline-secondary">View</button>
         </div>
     </div>
   </div>
