@@ -18,14 +18,12 @@ export class ProductDetailsComponent implements OnInit {
 
   loadProduct(): void {
     var id = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(id);
     if(id) {
         this.shopService.getProductById(+id).subscribe(product => {
-          console.log(product);
           this.product = product;
         },error => {
           console.log(error);
-        })
+        });
     }
   }
 }

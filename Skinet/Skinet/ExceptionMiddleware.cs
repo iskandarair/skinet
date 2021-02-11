@@ -39,7 +39,7 @@ namespace Skinet
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
                 var response = _env.IsDevelopment() ?
-                    new ApiException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString()) :
+                    new ApiException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace) :
                     new ApiException((int)HttpStatusCode.InternalServerError);
                 //json response 
                 var options = new JsonSerializerOptions()
