@@ -15,6 +15,7 @@ using Skinet.Errors;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Skinet.Extensions;
+using StackExchange.Redis;
 
 namespace Skinet
 {
@@ -32,6 +33,12 @@ namespace Skinet
             services.AddControllers();
             services.AddDbContext<StoreContext>(x =>
                 x.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var config = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(config);
+            });
 
             services.AddApplicationServices();
 

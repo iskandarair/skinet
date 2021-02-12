@@ -18,6 +18,7 @@ namespace Skinet.Extensions
         {
 
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(typeof(MappingProfiles));
 

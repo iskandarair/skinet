@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
   </ItemGroup>
 
   <ItemGroup>
