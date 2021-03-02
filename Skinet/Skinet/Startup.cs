@@ -11,6 +11,7 @@ using Skinet.Helpers;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Infrastructure.Identity;
 using Skinet.Errors;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -34,6 +35,11 @@ namespace Skinet
             services.AddDbContext<StoreContext>(x =>
                 x.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDbContext<AppIdentityDbContent>(x =>
+            {
+                x.UseSqlServer(_configuration.GetConnectionString("IdentityConnection"));
+            });
+
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {
                 var config = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"), true);
@@ -41,7 +47,7 @@ namespace Skinet
             });
 
             services.AddApplicationServices();
-
+            services.AddIdentityServices(_configuration);
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
@@ -63,6 +69,7 @@ namespace Skinet
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSwaggerDocumentation();
             app.UseCors("CorsPolicy");

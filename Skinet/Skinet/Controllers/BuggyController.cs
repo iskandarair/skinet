@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Skinet.Controllers
 {
@@ -25,6 +26,13 @@ namespace Skinet.Controllers
                 return NotFound(new ApiResponse(404));
             }
             return Ok();
+        }
+
+        [HttpGet("authTest")]
+        [Authorize]
+        public ActionResult<string> GetAuthTest()
+        {
+            return "Authorized, you are";
         }
 
         [HttpGet("serverError")]
