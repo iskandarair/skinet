@@ -7,6 +7,9 @@ import { HomeComponent } from './home/home/home.component';
 import { ShopModule } from './shop/shop.module';
 import { BasketModule } from './basket/basket.module';
 import { CheckoutModule } from './checkout/checkout.module';
+import { AccountModule } from './account/account.module';
+import { AccountRoutingModule } from './account/account-routing.module';
+import { AuthGuard } from './core/auth.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, data: {breadcrumb: 'home'}},
@@ -15,13 +18,17 @@ const routes: Routes = [
   {path: 'not-found', component: NotFoundComponent, data: {breadcrumb: 'not-error'}},
   {path: 'shop', loadChildren: () => {return ShopModule;}, data: {breadcrumb: 'shop'}},
   {path: 'basket', loadChildren: () => {return BasketModule; }, data: {breadcrumb: 'basket'}},
-  {path: 'checkout', loadChildren: () => {return CheckoutModule; }, data: {breadcrumb: 'checkout'}},
-  
-  {path: '**', redirectTo: 'not-found', pathMatch: 'full'}
+  {path: 'checkout',
+   loadChildren: () => {return CheckoutModule; },
+   canActivate: [AuthGuard],
+   data: {breadcrumb: 'checkout'}},
+  {path: 'account', loadChildren: () => {return AccountModule; }, data: {skip: true}},
+  {path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+
 })
 export class AppRoutingModule { }
